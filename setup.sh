@@ -38,11 +38,12 @@ webdir="${d:-"public_html"}"
 eval webdir="~/${webdir}"
 eval appdir="~/${a}"
 eval userpath="~"
+eval symlink_dir="${webdir}/${a}_public"
+
 appdir_ok="\033[1;31m[x]\033[0m"
 userpath_ok="\033[1;32m[ok]\033[0m"
 laravel_appname_ok="\033[1;32m[ok]\033[0m"
 webdir_ok="\033[1;31m[x]\033[0m"
-eval symlink_dir="${webdir}/${a}_public"
 
 if [ -d "${appdir}" ]; then
     appdir_ok="\033[1;32m[ok]\033[0m"
