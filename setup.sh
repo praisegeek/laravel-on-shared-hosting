@@ -6,9 +6,9 @@
 ##   -d  Web server document path. Default: public_html
 ##
 #- IMPLEMENTATION
-#-    version         ${setup} (www.appformular.net) 0.0.1
+#-    version         ${setup} (www.appformula.net) 0.0.1
 #-    author          Praise-God Emerenini
-#-    copyright       Copyright (c) http://www.appformular.net
+#-    copyright       Copyright (c) http://www.appformula.net
 #-    license         MIT License
 #-    script_id       1337
 
