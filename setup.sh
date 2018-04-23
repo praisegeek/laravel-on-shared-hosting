@@ -1,4 +1,16 @@
 #!/bin/bash
+## Usage: /bin/bash ./setup.sh [options] ARG1 ARG2
+##
+## Options:
+##   -a, Laravel App Name
+##   -d  Web server document path. Default: public_html
+##
+#- IMPLEMENTATION
+#-    version         ${setup} (www.appformular.net) 0.0.1
+#-    author          Praise-God Emerenini
+#-    copyright       Copyright (c) http://www.appformular.net
+#-    license         MIT License
+#-    script_id       1337
 
 usage() { echo "Usage: $0 [-a <appname>] [-d <webdir (optional) | default: 'public_html'>]" 1>&2; exit 1; }
 
@@ -65,8 +77,6 @@ then
     eval app_path="~/${a}"
     echo -e "\033[1;36m[+] Preparing ${app_path}\033[0m"
 
-    # eval "mkdir ${app_path} && chmod 755 ${app_path}"
-
     if [[ ! -d "${app_path}" ]] ; then
         echo -e "\033[1;31m[-] Laravel app directory: ${app_path} is not there, aborting.\033[0m"
         echo -e -n "\033[1;33m"
@@ -89,7 +99,7 @@ then
     echo -e "\033[1;36m[+] Creating symlinks\033[0m"
     echo -e "\033[1;33m e symlink ln -s ${app_path}/public ${webdir}/${a}_public\033[0m"
     echo -e "\033[1;36m[+] Creating .htaccess rule\033[0m"
-    #eval "cd ~/${webdir} && touch .htaccess" 
+
     eval "cat > .htaccess << EOF
         Options -Indexes
         RewriteEngine On 
@@ -99,8 +109,5 @@ then
         RewriteRule ^(.*)$ ${a}_public/$1 
         RewriteRule ^(/)?$ ${a}_public/index.php [L]
     "
-    #eval "cd -"
     echo -e -n "\033[1;32m[+] Tasks completed!\033[0m"
 fi
-
-# eval "chmod 755 /home/your_use/laravel_app/"
