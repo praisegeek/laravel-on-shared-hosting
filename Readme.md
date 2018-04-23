@@ -11,6 +11,6 @@ Ensure you have deployed your laravel app to your remote server.
 
 ### Usage
 ```bash
-~/.setup.sh -a LaravelApp
+~/bin/bash ./setup.sh -a LaravelApp
 ```
 
