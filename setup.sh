@@ -14,7 +14,7 @@
 
 usage() { echo "Usage: $0 [-a <appname>] [-d <webdir (optional) | default: 'public_html'>]" 1>&2; exit 1; }
 
-while getopts ":a:u:d:" o; do
+while getopts ":a:d:" o; do
     case "${o}" in
         a)
             a=${OPTARG}
@@ -36,8 +36,8 @@ fi
 
 webdir="${d:-"public_html"}"
 eval webdir="~/${webdir}"
-eval appdir="~/${u}${a}"
-eval userpath="~${u}"
+eval appdir="~/${a}"
+eval userpath="~"
 appdir_ok="\033[1;31m[x]\033[0m"
 userpath_ok="\033[1;32m[ok]\033[0m"
 laravel_appname_ok="\033[1;32m[ok]\033[0m"
@@ -97,7 +97,7 @@ then
     eval "chmod -R 777 ${app_path}/storage"
     echo
     echo -e "\033[1;36m[+] Creating symlinks\033[0m"
-    echo -e "\033[1;33m e symlink ln -s ${app_path}/public ${webdir}/${a}_public\033[0m"
+    echo eval "symlink ln -s ${app_path}/public ${webdir}/${a}_public"
     echo -e "\033[1;36m[+] Creating .htaccess rule\033[0m"
 
     eval "cat > .htaccess << EOF
