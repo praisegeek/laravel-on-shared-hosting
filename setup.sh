@@ -99,6 +99,9 @@ then
     echo
     echo -e "\033[1;36m[+] Creating symlinks\033[0m"
     echo eval "symlink ln -s ${app_path}/public ${webdir}/${a}_public"
+    echo -e "\033[1;36m[+] Switching to web server document root\033[0m"
+    eval "cd ${webdir}"
+
     echo -e "\033[1;36m[+] Creating .htaccess rule\033[0m"
 
     eval "cat > .htaccess << EOF
@@ -111,4 +114,5 @@ then
         RewriteRule ^(/)?$ ${a}_public/index.php [L]
     "
     echo -e -n "\033[1;32m[+] Tasks completed!\033[0m"
+    eval "cd -"
 fi
