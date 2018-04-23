@@ -12,12 +12,15 @@
 #-    license         MIT License
 #-    script_id       1337
 
-usage() { echo "Usage: $0 [-a <appname>] [-d <webdir (optional) | default: 'public_html'>]" 1>&2; exit 1; }
+usage() { echo "Usage: $0 [-a <app relative path>] [-u <user>] [-d <webdir (optional) | default: 'public_html'>]" 1>&2; exit 1; }
 
-while getopts ":a:d:" o; do
+while getopts ":a:u:d:" o; do
     case "${o}" in
         a)
             a=${OPTARG}
+            ;;
+        u)
+            u=${OPTARG}
             ;;
         d)
             d=${OPTARG}
@@ -30,21 +33,24 @@ done
 shift $((OPTIND-1))
 
 
-if [ -z "${a}" ]; then
+if [[ -z "${a}" || -z "${u}" ]]; then
     usage
 fi
 
 webdir="${d:-"public_html"}"
-eval webdir="~/${webdir}"
-eval appdir="~/${a}"
-eval userpath="~"
+eval userpath="/home/${u}"
+eval webdir="${userpath}/${webdir}"
+eval appdir="${userpath}/${a}"
 eval symlink_dir="${webdir}/${a}_public"
 
 appdir_ok="\033[1;31m[x]\033[0m"
-userpath_ok="\033[1;32m[ok]\033[0m"
+userpath_ok="\033[1;31m[x]\033[0m"
 laravel_appname_ok="\033[1;32m[ok]\033[0m"
 webdir_ok="\033[1;31m[x]\033[0m"
 
+if [ -d "${userpath}" ]; then
+    userpath_ok="\033[1;32m[ok]\033[0m"
+fi
 if [ -d "${appdir}" ]; then
     appdir_ok="\033[1;32m[ok]\033[0m"
 fi
@@ -60,7 +66,7 @@ echo
 echo -e "\033[1;36m ----------------------------------------------------------------------------------\033[0m"
 echo
 echo -e "\033[1;36m User Path = ${userpath} ${userpath_ok} \033[0m"
-echo -e "\033[1;36m Laravel Appname = ${a} ${laravel_appname_ok} \033[0m"
+echo -e "\033[1;36m Laravel App Directory = ${a} ${laravel_appname_ok} \033[0m"
 echo -e "\033[1;36m Web Directory ${webdir} ${webdir_ok} \033[0m"
 echo -e "\033[1;36m Laravel App Directory ${appdir} ${appdir_ok} \033[0m"
 echo -e "\033[1;36m Symnlink Directory ${symlink_dir} \033[0m"
@@ -75,7 +81,7 @@ echo
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    eval app_path="~/${a}"
+    eval app_path="${userpath}/${a}"
     echo -e "\033[1;36m[+] Preparing ${app_path}\033[0m"
 
     if [[ ! -d "${app_path}" ]] ; then
