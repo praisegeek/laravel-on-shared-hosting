@@ -109,7 +109,7 @@ then
     eval "chmod -R 777 ${app_path}/storage"
     echo
     echo -e "\033[1;36m[+] Creating symlinks\033[0m"
-    echo eval "ln -s ${app_path}/public ${webdir}/${app}_public"
+    eval "ln -s ${app_path}/public ${webdir}/${app}_public"
     echo -e "\033[1;36m[+] Switching to web server document root\033[0m"
     eval "cd ${webdir}"
 
@@ -125,5 +125,6 @@ then
         RewriteRule ^(/)?$ ${app}_public/index.php [L]
     "
     echo -e -n "\033[1;32m[+] Tasks completed!\033[0m"
+    echo 
     eval "cd -"
 fi
