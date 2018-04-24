@@ -38,6 +38,10 @@ if [[ -z "${a}" || -z "${u}" ]]; then
 fi
 
 webdir="${d:-"public_html"}"
+IFS="/" && Array=($a)
+length=$((${#Array[@]} - 1))
+app="${Array[$length]}"
+
 eval userpath="/home/${u}"
 eval webdir="${userpath}/${webdir}"
 eval appdir="${userpath}/${a}"
@@ -66,6 +70,7 @@ echo
 echo -e "\033[1;36m ----------------------------------------------------------------------------------\033[0m"
 echo
 echo -e "\033[1;36m User Path = ${userpath} ${userpath_ok} \033[0m"
+echo -e "\033[1;36m Laravel App = ${app} ${laravel_appname_ok} \033[0m"
 echo -e "\033[1;36m Laravel App Directory = ${a} ${laravel_appname_ok} \033[0m"
 echo -e "\033[1;36m Web Directory ${webdir} ${webdir_ok} \033[0m"
 echo -e "\033[1;36m Laravel App Directory ${appdir} ${appdir_ok} \033[0m"
@@ -104,7 +109,7 @@ then
     eval "chmod -R 777 ${app_path}/storage"
     echo
     echo -e "\033[1;36m[+] Creating symlinks\033[0m"
-    echo eval "symlink ln -s ${app_path}/public ${webdir}/${a}_public"
+    echo eval "ln -s ${app_path}/public ${webdir}/${app}_public"
     echo -e "\033[1;36m[+] Switching to web server document root\033[0m"
     eval "cd ${webdir}"
 
@@ -113,11 +118,11 @@ then
     eval "cat > .htaccess << EOF
         Options -Indexes
         RewriteEngine On 
-        RewriteCond %{REQUEST_URI} !^/${a}_public/ 
+        RewriteCond %{REQUEST_URI} !^/${app}_public/ 
         RewriteCond %{REQUEST_FILENAME} !-f 
         RewriteCond %{REQUEST_FILENAME} !-d 
-        RewriteRule ^(.*)$ ${a}_public/$1 
-        RewriteRule ^(/)?$ ${a}_public/index.php [L]
+        RewriteRule ^(.*)$ ${app}_public/$1 
+        RewriteRule ^(/)?$ ${app}_public/index.php [L]
     "
     echo -e -n "\033[1;32m[+] Tasks completed!\033[0m"
     eval "cd -"
